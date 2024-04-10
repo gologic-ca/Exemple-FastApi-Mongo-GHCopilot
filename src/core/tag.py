@@ -1,22 +1,21 @@
 from typing import List
 
-from odmantic import AIOEngine
-
 from models.article import ArticleModel
+from odmantic import AIOEngine
 
 
 async def get_all_tags(engine: AIOEngine) -> List[str]:
     pipeline = [
         {
             "$unwind": {
-                "path": ++ArticleModel.tag_list,
+                "path": "$tag_list",
                 "preserveNullAndEmptyArrays": True,
             }
         },
         {
             "$group": {
                 "_id": "all",
-                "all_tags": {"$addToSet": ++ArticleModel.tag_list},
+                "all_tags": {"$addToSet": "$tag_list"},
             }
         },
     ]
