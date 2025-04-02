@@ -1,36 +1,39 @@
 # ![RealWorld FastAPI + ODMantic App](logo.png)
 
-<div align="center">
+## Pré-requis pour exemple de projet 
 
-<!---
-[![CircleCI](https://circleci.com/gh/......)](https://circleci.com/gh/...)
-[![codecov](https://codecov.io/gh/.../........)](https://codecov.io/gh/.....)
-[![Maintainability](https://api.codeclimate.com/v1/badges/......)](https://codeclimate.com/repos/....)
--->
+(Anglais à suivre)
 
-![Python: 3.10](https://img.shields.io/badge/python-3.10-informational.svg)
-[![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
-[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/python/black)
-[![mypy: checked](https://img.shields.io/badge/mypy-checked-informational.svg)](http://mypy-lang.org/)
-[![Manager: poetry](https://img.shields.io/badge/manager-poetry-blueviolet.svg)](https://poetry.eustace.io/)
+Nous sommes ravis d'explorer GitHub Copilot avec vous à travers des exemples pratiques. Pour assurer le bon déroulement, veuillez préparer votre poste de travail de la manière suivante :
 
-</div>
+- Installer un environnement de développement (choisissez l'une des options suivantes) :
+  - **Visual Studio Code** : [https://code.visualstudio.com/download](https://code.visualstudio.com/download)
 
-> ### [FastAPI](https://github.com/tiangolo/fastapi) + [ODMantic](https://github.com/art049/odmantic) codebase containing real world examples (CRUD, auth, advanced patterns, etc) that adheres to the [RealWorld](https://github.com/gothinkster/realworld) spec and API.
+- [Installer Docker](https://docs.docker.com/engine/install/) (Pour l'entité local de MongoDB)
 
-[![CI](https://github.com/art049/fastapi-odmantic-realworld-example/actions/workflows/ci.yml/badge.svg)](https://github.com/art049/fastapi-odmantic-realworld-example/actions/workflows/ci.yml)
-[![Realworld Tests](https://github.com/art049/fastapi-odmantic-realworld-example/actions/workflows/realworld-tests.yml/badge.svg)](https://github.com/art049/fastapi-odmantic-realworld-example/actions/workflows/realworld-tests.yml)
+- Installer Python ( >= Version 3.11) [https://www.python.org/downloads/](https://www.python.org/downloads/)
+    - Assurez-vous que les variables dans votre système sont bien configurés
+    - Tapez "View Advanced System Settings" dans la barre de recherche
+    - Dans "Advanced", cliquez "Environment Variables" en bas à droit
+    - Sélectionnez "Path", clicquez "Edit..." (ou double-cliquez "Path")
+    - ***Cliquez "New" et insérez le path vers votre version de python*** 
+    - Pour moi c'est: `C:\Users\SpencerHandfield\AppData\Local\Programs\Python\Python313` et `C:\Users\SpencerHandfield\AppData\Local\Programs\Python\Python313\Scripts`
+    - Vérifiez si ça bien fonctionner en tapant `py --version` dans le terminal
 
-## Getting Started
+- Installer uv [https://docs.astral.sh/uv/getting-started/installation/#standalone-installer](https://docs.astral.sh/uv/getting-started/installation/#standalone-installer)
+    - **Dans Terminal** Dans VSCode, Ouvrez un nouveau terminal et roulez la command `powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"`
 
-### :hammer: Installation
+## Démarrer l'application
 
-- [Install Docker](https://docs.docker.com/engine/install/) (necessary to run a local MongoDB instance)
-- Make sure Python 3.10 is available on your system
-- Install [poetry](https://poetry.eustace.io/)
-- Setup the environment `./scripts/setup.sh`
+### Avec Visual Studio Code :
+- Ouvrir VSCode et ouvrir une nouvelle fenêtre (Ctrl+Shift+N).
+- Dans l'accueil, cliquer sur "Clone Git Repository...", entrer l'URL de ce dépôt (à savoir : [https://github.com/gologic-ca/Exemple-FastApi-Mongo-GHCopilot.git](https://github.com/gologic-ca/Exemple-FastApi-Mongo-GHCopilot.git)) et confirmer en cliquant sur "Clone from the URL". Cliquer sur "Open".
+- Une fois le projet ouvert, ouvrir un nouveau terminal (Shift+Ctrl+\`). Exécuter les commandes :
+`uv sync`, `source .venv/Scripts/activate` et finalement `uvicorn --app-dir ./src/ api:app`
 
-### :bulb: Useful scripts
+Félicitations l'application devrait bien être parti !
+
+### :bulb: Scripts individuels
 
 - Start the MongoDB instance `./scripts/start-mongo.sh`
 - Stop the MongoDB instance `./scripts/stop-mongo.sh`
@@ -38,9 +41,3 @@
 - Format the code `./scripts/format.sh`
 - Manually run the linter `./scripts/lint.sh`
 - Manually run the tests `./scripts/test.sh`
-
-## Coming Soon
-
-- [ ] Articles with details on every single step required to build this app
-- [ ] Testing
-- [ ] Deployment on AWS with MongoDB Atlas
