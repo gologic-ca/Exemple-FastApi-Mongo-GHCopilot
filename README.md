@@ -1,4 +1,4 @@
-# ![RealWorld FastAPI + ODMantic App](logo.png)
+# ![Formation GoLogic Example de Projet](Gologic.png)
 
 ## Pré-requis pour exemple de projet 
 
@@ -21,7 +21,7 @@ Nous sommes ravis d'explorer GitHub Copilot avec vous à travers des exemples pr
     - Vérifiez si ça bien fonctionner en tapant `py --version` dans le terminal
 
 - Installer uv [https://docs.astral.sh/uv/getting-started/installation/#standalone-installer](https://docs.astral.sh/uv/getting-started/installation/#standalone-installer)
-    - **Dans Terminal** Dans VSCode, Ouvrez un nouveau terminal et roulez la command `powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"`
+    - **Dans Terminal** Dans VSCode, Ouvrez un nouveau terminal et roulez la commande `powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"`
 
 ## Démarrer l'application
 
