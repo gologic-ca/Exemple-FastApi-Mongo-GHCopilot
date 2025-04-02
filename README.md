@@ -2,8 +2,6 @@
 
 ## Pré-requis pour exemple de projet 
 
-(Anglais à suivre)
-
 Nous sommes ravis d'explorer GitHub Copilot avec vous à travers des exemples pratiques. Pour assurer le bon déroulement, veuillez préparer votre poste de travail de la manière suivante :
 
 - Installer un environnement de développement (choisissez l'une des options suivantes) :
