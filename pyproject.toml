@@ -1,28 +1,38 @@
-[tool.poetry]
+[project]
 name = "fastapi-odmantic-realworld-example"
 version = "0.1.0"
 description = ""
-authors = ["Arthur Pastel <arthur.pastel@gmail.com>"]
+authors = [
+    { name = "Arthur Pastel", email = "arthur.pastel@gmail.com" }
+]
 license = "ISC"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi==0.104.1",
+    "passlib[bcrypt]>=1.7.4",
+    "python-jose[cryptography]>=3.3.0",
+    "odmantic @ git+https://github.com/art049/odmantic.git@46572816169fc48e821a8971077b58176897b93e#subdirectory=.",
+    "pydantic-settings>=2.1.0",
+    "uvicorn>=0.24.0.post1",
+]
 
-[tool.poetry.dependencies]
-python = "^3.11"
-fastapi = "0.104.1"
-passlib = { extras = ["bcrypt"], version = "^1.7.4" }
-python-jose = { extras = ["cryptography"], version = "^3.3.0" }
-odmantic = { git = "https://github.com/art049/odmantic.git" }
-pydantic-settings = "^2.1.0"
-uvicorn = "^0.24.0.post1"
-
-[tool.poetry.dev-dependencies]
-pytest = "^7.1.2"
-isort = "^5.10.1"
-black = "^22.6.0"
-flake8 = "^5.0.4"
-mypy = "^0.971"
-pytest-asyncio = "^0.19.0"
-pre-commit = "^2.20.0"
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.1.2",
+    "isort>=5.10.1",
+    "black>=22.6.0",
+    "flake8>=5.0.4",
+    "mypy>=0.971",
+    "pytest-asyncio>=0.19.0",
+    "pre-commit>=2.20.0",
+]
 
 [build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src"]
+
+[tool.hatch.metadata]
+allow-direct-references = true
