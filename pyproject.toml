@@ -11,7 +11,7 @@ dependencies = [
     "fastapi==0.104.1",
     "passlib[bcrypt]>=1.7.4",
     "python-jose[cryptography]>=3.3.0",
-    "odmantic @ git+https://github.com/art049/odmantic.git@46572816169fc48e821a8971077b58176897b93e#subdirectory=.",
+    "odmantic>=0.9.2",
     "pydantic-settings>=2.1.0",
     "uvicorn>=0.24.0.post1",
 ]
@@ -26,6 +26,9 @@ dev = [
     "pytest-asyncio>=0.19.0",
     "pre-commit>=2.20.0",
 ]
+
+[project.scripts]
+start = "src.api:main"
 
 [build-system]
 requires = ["hatchling"]
