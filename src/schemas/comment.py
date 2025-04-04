@@ -1,22 +1,42 @@
 from datetime import datetime
-from typing import List, Tuple
+from typing import List, Optional, Tuple
 
-from odmantic.bson import ObjectId
-from pydantic import Field
+from pydantic import BaseModel, Field
 
 from models.article import CommentModel
 from models.user import UserModel
-from schemas.user import Profile
+from schemas.base import BaseSchema
+from schemas.user import Profile, User
 
-from .base import BaseSchema
 
+class CommentBase(BaseSchema):
+    """Schéma de base pour les commentaires."""
 
-class Comment(BaseSchema):
-    id: ObjectId
-    created_at: datetime = Field(..., alias="createdAt")
-    updated_at: datetime = Field(..., alias="updatedAt")
     body: str
-    author: Profile
+
+
+class CommentCreate(CommentBase):
+    """Schéma pour la création d'un commentaire."""
+
+    pass
+
+
+class CommentUpdate(CommentBase):
+    """Schéma pour la mise à jour d'un commentaire."""
+
+    pass
+
+
+class Comment(CommentBase):
+    """Schéma pour un commentaire."""
+
+    id: int
+    created_at: datetime
+    updated_at: datetime
+    author: User
+
+    class Config:
+        from_attributes = True
 
 
 class SingleCommentResponse(BaseSchema):

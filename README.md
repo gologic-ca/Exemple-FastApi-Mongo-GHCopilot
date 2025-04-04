@@ -1,4 +1,4 @@
-# ![RealWorld FastAPI + ODMantic App](logo.png)
+# ![RealWorld FastAPI + SQLAlchemy App](logo.png)
 
 <div align="center">
 
@@ -16,31 +16,82 @@
 
 </div>
 
-> ### [FastAPI](https://github.com/tiangolo/fastapi) + [ODMantic](https://github.com/art049/odmantic) codebase containing real world examples (CRUD, auth, advanced patterns, etc) that adheres to the [RealWorld](https://github.com/gothinkster/realworld) spec and API.
+> ### [FastAPI](https://github.com/tiangolo/fastapi) + [SQLAlchemy](https://www.sqlalchemy.org/) codebase containing real world examples (CRUD, auth, advanced patterns, etc) that adheres to the [RealWorld](https://github.com/gothinkster/realworld) spec and API.
 
-[![CI](https://github.com/art049/fastapi-odmantic-realworld-example/actions/workflows/ci.yml/badge.svg)](https://github.com/art049/fastapi-odmantic-realworld-example/actions/workflows/ci.yml)
-[![Realworld Tests](https://github.com/art049/fastapi-odmantic-realworld-example/actions/workflows/realworld-tests.yml/badge.svg)](https://github.com/art049/fastapi-odmantic-realworld-example/actions/workflows/realworld-tests.yml)
+[![CI](https://github.com/art049/fastapi-sqlalchemy-realworld-example/actions/workflows/ci.yml/badge.svg)](https://github.com/art049/fastapi-sqlalchemy-realworld-example/actions/workflows/ci.yml)
+[![Realworld Tests](https://github.com/art049/fastapi-sqlalchemy-realworld-example/actions/workflows/realworld-tests.yml/badge.svg)](https://github.com/art049/fastapi-sqlalchemy-realworld-example/actions/workflows/realworld-tests.yml)
 
-## Getting Started
+# Getting started
 
-### :hammer: Installation
+You can view a live demo at [https://demo.realworld.io/](https://demo.realworld.io/)
 
-- [Install Docker](https://docs.docker.com/engine/install/) (necessary to run a local MongoDB instance)
-- Make sure Python 3.10 is available on your system
-- Install [poetry](https://poetry.eustace.io/)
-- Setup the environment `./scripts/setup.sh`
+## Prerequisites
 
-### :bulb: Useful scripts
+- Python 3.9+
+- pip
 
-- Start the MongoDB instance `./scripts/start-mongo.sh`
-- Stop the MongoDB instance `./scripts/stop-mongo.sh`
-- Start the FastAPI server `./scripts/start.sh`
-- Format the code `./scripts/format.sh`
-- Manually run the linter `./scripts/lint.sh`
-- Manually run the tests `./scripts/test.sh`
+## Installation
 
-## Coming Soon
+1. Clone the repository:
 
-- [ ] Articles with details on every single step required to build this app
-- [ ] Testing
-- [ ] Deployment on AWS with MongoDB Atlas
+```bash
+git clone https://github.com/yourusername/fastapi-sqlalchemy-realworld-example.git
+cd fastapi-sqlalchemy-realworld-example
+```
+
+2. Create a virtual environment and activate it:
+
+```bash
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+```
+
+3. Install dependencies:
+
+```bash
+pip install -e .
+```
+
+4. Initialize the database:
+
+```bash
+alembic upgrade head
+```
+
+5. Run the application:
+
+```bash
+uvicorn src.api:app --reload
+```
+
+The API will be available at [http://localhost:8000](http://localhost:8000)
+
+## Features
+
+- User authentication (JWT)
+- User registration and login
+- Profile management
+- Article CRUD operations
+- Comments on articles
+- Favorite articles
+- Follow/unfollow users
+- Tags management
+
+## API Documentation
+
+Once the application is running, you can access:
+
+- Swagger UI documentation at [http://localhost:8000/docs](http://localhost:8000/docs)
+- ReDoc documentation at [http://localhost:8000/redoc](http://localhost:8000/redoc)
+
+## Testing
+
+Run the tests with:
+
+```bash
+pytest
+```
+
+## License
+
+MIT

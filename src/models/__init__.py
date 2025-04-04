@@ -1,20 +1,19 @@
 """
-FastAPI Odmantic RealWorld Example Application
+FastAPI SQLAlchemy RealWorld Example Application
 """
 
-# Import des modèles ODMantic (à conserver pour la migration progressive)
-from models.article import ArticleModel as ODManticArticleModel
-from models.user import UserModel as ODManticUserModel
-
-# Import des modèles SQLAlchemy
-from models.article_sql import ArticleModel, CommentModel, ArticleTag
-from models.user_sql import UserModel
+from models.article_favorites_sql import ArticleFavorites
+from models.article_sql import Article
+from models.comment_sql import Comment
+from models.tag_sql import Tag
+from models.user_follows_sql import UserFollows
+from models.user_sql import User
 
 __all__ = [
-    "ODManticArticleModel",
-    "ODManticUserModel",
-    "ArticleModel",
-    "CommentModel",
-    "ArticleTag",
-    "UserModel",
+    "Article",
+    "User",
+    "Comment",
+    "Tag",
+    "UserFollows",
+    "ArticleFavorites",
 ]

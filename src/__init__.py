@@ -1,3 +1,3 @@
 """
-FastAPI Odmantic RealWorld Example Application
+FastAPI SQLAlchemy RealWorld Example Application
 """
