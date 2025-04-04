@@ -1,12 +1,15 @@
+from typing import Tuple
+
 import uvicorn
-from fastapi import FastAPI
+from fastapi import APIRouter, FastAPI
 from starlette.middleware.cors import CORSMiddleware
 
-from endpoints.article import router as article_router
-from endpoints.comment import router as comment_router
-from endpoints.profile import router as profile_router
-from endpoints.tag import router as tag_router
-from endpoints.user import router as user_router
+from database import Base, engine
+from endpoints.article_sql import router as article_router
+from endpoints.comment_sql import router as comment_router
+from endpoints.profile_sql import router as profile_router
+from endpoints.tag_sql import router as tag_router
+from endpoints.user_sql import router as user_router
 
 app = FastAPI()
 
@@ -23,6 +26,13 @@ app.add_middleware(
 @app.get("/health", tags=["health"])
 async def health_check():
     return {"status": "ok"}
+
+
+@app.on_event("startup")
+async def startup():
+    # Créer les tables au démarrage de l'application
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
 
 
 app.include_router(user_router, tags=["user"])

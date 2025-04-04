@@ -1,3 +1,3 @@
 #!/bin/bash
 source .venv/Scripts/activate
-uvicorn --app-dir ./src/ api:app --reload
+python scripts/init_db.py 

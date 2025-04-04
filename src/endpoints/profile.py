@@ -1,10 +1,10 @@
-from typing import Optional
+from typing import List, Optional
 
 from fastapi import APIRouter, Depends
 
-from core.user import get_user_by_username
+from core.user import get_all_users, get_user_by_username
 from models.user import UserModel
-from schemas.user import Profile, ProfileResponse
+from schemas.user import Profile, ProfileResponse, ProfilesResponse
 from settings import Engine
 from utils.security import get_current_user_instance, get_current_user_optional_instance
 
@@ -47,3 +47,17 @@ async def unfollow_user(
     await Engine.save(user_instance)
     profile = Profile(following=False, **user_to_unfollow.dict())
     return ProfileResponse(profile=profile)
+
+
+@router.get("/profiles", response_model=ProfilesResponse)
+async def get_profiles(
+    logged_user: Optional[UserModel] = Depends(get_current_user_optional_instance),
+):
+    users = await get_all_users(Engine)
+    profiles = []
+    for user in users:
+        following = False
+        if logged_user is not None and user.id in logged_user.following_ids:
+            following = True
+        profiles.append(Profile(following=following, **user.dict()))
+    return ProfilesResponse(profiles=profiles)
