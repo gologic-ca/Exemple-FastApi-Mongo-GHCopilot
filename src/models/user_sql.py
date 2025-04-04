@@ -5,7 +5,7 @@ from sqlalchemy import Column, DateTime, ForeignKey, Integer, String, Table
 from sqlalchemy.orm import Mapped, relationship
 
 from database import Base
-from models.article import ArticleModel, CommentModel
+from models.article_sql import ArticleModel, CommentModel
 
 # Table de liaison pour les utilisateurs suivis
 user_follows = Table(

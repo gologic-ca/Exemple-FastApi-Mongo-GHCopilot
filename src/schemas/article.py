@@ -3,8 +3,8 @@ from typing import List, Optional, Sequence
 
 from pydantic import Field
 
-from models.article import ArticleModel
-from models.user import UserModel
+from models.article_sql import ArticleModel
+from models.user_sql import UserModel
 from schemas.user import Profile
 
 from .base import BaseSchema

@@ -4,8 +4,6 @@ import os
 from sqlalchemy.ext.asyncio import create_async_engine
 
 from database import Base
-from models.article_sql import ArticleModel, ArticleTag, CommentModel
-from models.user_sql import UserModel
 
 
 async def init_db():

@@ -3,8 +3,8 @@ from typing import List, Optional, Tuple
 
 from pydantic import BaseModel, Field
 
-from models.article import CommentModel
-from models.user import UserModel
+from models.article_sql import CommentModel
+from models.user_sql import UserModel
 from schemas.base import BaseSchema
 from schemas.user import Profile, User
 
@@ -48,9 +48,7 @@ class MultipleCommentsResponse(BaseSchema):
 
     @classmethod
     def from_comments_and_authors(cls, data: List[Tuple[CommentModel, UserModel]]):
-        return cls(
-            comments=[{**comment.dict(), "author": author} for comment, author in data]
-        )
+        return cls(comments=[{**comment.dict(), "author": author} for comment, author in data])
 
 
 class NewComment(BaseSchema):

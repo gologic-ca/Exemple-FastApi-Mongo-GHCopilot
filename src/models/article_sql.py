@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import ForwardRef, List, Optional
+from typing import List
 from uuid import uuid4
 
 from sqlalchemy import Column, DateTime, ForeignKey, Integer, String, Table, Text
@@ -32,9 +32,7 @@ article_favorites = Table(
         ForeignKey("articles.id", ondelete="CASCADE"),
         primary_key=True,
     ),
-    Column(
-        "user_id", Integer, ForeignKey("users.id", ondelete="CASCADE"), primary_key=True
-    ),
+    Column("user_id", Integer, ForeignKey("users.id", ondelete="CASCADE"), primary_key=True),
 )
 
 # Table d'association pour les relations de suivi
@@ -76,15 +74,11 @@ class CommentModel(Base):
     updated_at: Mapped[datetime] = Column(
         DateTime, default=datetime.utcnow, onupdate=datetime.utcnow
     )
-    article_id: Mapped[int] = Column(
-        Integer, ForeignKey("articles.id", ondelete="CASCADE")
-    )
+    article_id: Mapped[int] = Column(Integer, ForeignKey("articles.id", ondelete="CASCADE"))
     author_id: Mapped[int] = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"))
 
     # Relations
-    article: Mapped["ArticleModel"] = relationship(
-        "ArticleModel", back_populates="comments"
-    )
+    article: Mapped["ArticleModel"] = relationship("ArticleModel", back_populates="comments")
     author: Mapped[UserModel] = relationship(UserModel, back_populates="comments")
 
     def __repr__(self):

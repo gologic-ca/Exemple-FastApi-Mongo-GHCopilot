@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import List
 
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -10,12 +10,9 @@ from core.exceptions import (
     NotCommentAuthorException,
 )
 from models.article_sql import ArticleModel, CommentModel
-from models.user_sql import UserModel
 
 
-async def get_article_comments(
-    session: AsyncSession, article_slug: str
-) -> List[CommentModel]:
+async def get_article_comments(session: AsyncSession, article_slug: str) -> List[CommentModel]:
     """Récupère tous les commentaires d'un article."""
     query = (
         select(CommentModel)
