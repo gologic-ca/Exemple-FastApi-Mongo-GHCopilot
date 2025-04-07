@@ -1,11 +1,15 @@
 from datetime import datetime
-from typing import List, Optional
+from typing import List, Optional, TYPE_CHECKING
 
 from sqlalchemy import Column, DateTime, ForeignKey, Integer, String, Table
 from sqlalchemy.orm import Mapped, relationship
 
 from database import Base
-from models.article_sql import ArticleModel, CommentModel
+# Remove the runtime import that causes the circular dependency
+# from models.article_sql import ArticleModel, CommentModel
+
+if TYPE_CHECKING:
+    from models.article_sql import ArticleModel, CommentModel
 
 # Table de liaison pour les utilisateurs suivis
 user_follows = Table(
@@ -24,7 +28,6 @@ user_follows = Table(
         primary_key=True,
     ),
 )
-
 
 class UserModel(Base):
     """Modèle pour les utilisateurs."""
