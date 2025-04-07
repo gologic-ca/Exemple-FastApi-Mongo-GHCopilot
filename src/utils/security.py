@@ -13,7 +13,7 @@ from starlette.requests import Request
 
 from core.exceptions import CredentialsException, NotAuthenticatedException
 from dependencies import get_db
-from models.user_sql import UserModel as User
+from models.user_sql import User
 from schemas.user import User as UserSchema
 from settings import settings
 
