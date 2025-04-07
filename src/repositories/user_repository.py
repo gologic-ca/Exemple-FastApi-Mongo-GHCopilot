@@ -7,13 +7,13 @@ from core.exceptions import UserNotFoundException
 from models.user_sql import UserModel
 
 
-async def get_user_by_username(session: AsyncSession, username: str) -> UserModel:
+async def get_user_by_username(session: AsyncSession, username: str, raise_exception: bool = True) -> Optional[UserModel]:
     """Récupère un utilisateur par son nom d'utilisateur."""
     query = select(UserModel).where(UserModel.username == username)
     result = await session.execute(query)
     user = result.scalar_one_or_none()
 
-    if user is None:
+    if user is None and raise_exception:
         raise UserNotFoundException()
 
     return user

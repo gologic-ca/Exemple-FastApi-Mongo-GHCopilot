@@ -54,7 +54,7 @@ async def register_user(
             detail="Email already registered",
         )
 
-    existing_user = await get_user_by_username(db, user.username)
+    existing_user = await get_user_by_username(db, user.username, raise_exception=False)
     if existing_user:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -79,7 +79,7 @@ async def register_user(
 
 @router.post("/users/login", response_model=UserResponse)
 async def login_user(
-    user_input: LoginUser = Body(..., embed=True, alias="user"),
+    user_input: LoginUser = Body(..., embed=True, alias="user_input"),
     db: AsyncSession = Depends(get_db),
 ):
     """Connecte un utilisateur existant."""

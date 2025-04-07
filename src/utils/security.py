@@ -90,15 +90,23 @@ async def authenticate_user(db: AsyncSession, email: str, password: str) -> Opti
     return user
 
 
-def create_access_token(data: dict, expires_delta: Optional[timedelta] = None) -> str:
-    """Crée un token JWT."""
-    to_encode = data.copy()
+def create_access_token(data: dict | User, expires_delta: Optional[timedelta] = None) -> str:
+    """Creates a JWT token from either a dict or User model."""
+    if isinstance(data, User):
+        # Create token content from User model
+        to_encode = {"sub": TokenContent(username=data.username).json()}
+    else:
+        # Handle dictionary input
+        to_encode = data.copy()
+    
     if expires_delta:
         expire = datetime.utcnow() + expires_delta
     else:
         expire = datetime.utcnow() + timedelta(minutes=15)
     to_encode.update({"exp": expire})
-    encoded_jwt = jwt.encode(to_encode, settings.SECRET_KEY, algorithm=settings.ALGORITHM)
+    # Get the raw secret value from SecretStr
+    secret_key = settings.SECRET_KEY.get_secret_value()
+    encoded_jwt = jwt.encode(to_encode, secret_key, algorithm=settings.ALGORITHM)
     return encoded_jwt
 
 
