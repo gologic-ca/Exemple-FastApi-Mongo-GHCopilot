@@ -29,21 +29,13 @@ Nous sommes ravis d'explorer GitHub Copilot avec vous à travers des exemples pr
 ### Avec Visual Studio Code :
 - Ouvrir VSCode et ouvrir une nouvelle fenêtre (Ctrl+Shift+N).
 - Dans l'accueil, cliquer sur "Clone Git Repository...", entrer l'URL de ce dépôt (à savoir : [https://github.com/gologic-ca/Exemple-FastApi-Mongo-GHCopilot.git](https://github.com/gologic-ca/Exemple-FastApi-Mongo-GHCopilot.git)) et confirmer en cliquant sur "Clone from the URL". Cliquer sur "Open".
-- Une fois le projet ouvert, ouvrir un nouveau terminal (Shift+Ctrl+\`). Exécuter les commandes :
+- Une fois le projet ouvert, ouvrir un nouveau terminal BASH (Shift+Ctrl+\`). Soit avec click droite "New Terminal With Profile..." et "Git Bash" ou la petite flèche à côté du "+" dans la fenêtre du terminal pour "New Terminal" et sélectionnez "Git Bash"
+Exécuter les commandes :
   - `uv sync`
-  - `source .venv/Scripts/activate`
-  - Dans un Terminal Bash :  `bash ./scripts/start-mongo.sh`
-      - Soit avec click droite "New Terminal With Profile..." et "Git Bash" ou la petite flèche à côté du "+" dans la fenêtre du terminal pour "New Terminal" et sélectionnez "Git Bash"
-  - Finalement `uvicorn --app-dir ./src/ api:app`
-- Validez que l'application fonctionne en allant à `localhost:8080/docs`
+  - `alembic init alembic`
+  - Dans le fichier `alembic.ini`, modifiez la ligne 66 pour dire: `sqlalchemy.url = sqlite:///./sql_app.db`
+  - `alembic upgrade head`
+  - `uvicorn --app-dir ./src/ api:app`
+- Validez que l'application fonctionne en allant à `localhost:8080/docs` ou `http://127.0.0.1:8000/docs`
 
 Félicitations l'application devrait bien être parti !
-
-### :bulb: Scripts individuels
-
-- Start the MongoDB instance `./scripts/start-mongo.sh`
-- Stop the MongoDB instance `./scripts/stop-mongo.sh`
-- Start the FastAPI server `./scripts/start.sh`
-- Format the code `./scripts/format.sh`
-- Manually run the linter `./scripts/lint.sh`
-- Manually run the tests `./scripts/test.sh`
