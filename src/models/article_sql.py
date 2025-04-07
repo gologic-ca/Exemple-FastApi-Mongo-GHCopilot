@@ -6,7 +6,7 @@ from sqlalchemy import Column, DateTime, ForeignKey, Integer, String, Table, Tex
 from sqlalchemy.orm import Mapped, relationship
 
 from database import Base
-from models.user_sql import UserModel
+# from models.user_sql import UserModel
 
 
 def generate_random_str():
@@ -79,7 +79,7 @@ class CommentModel(Base):
 
     # Relations
     article: Mapped["ArticleModel"] = relationship("ArticleModel", back_populates="comments")
-    author: Mapped[UserModel] = relationship(UserModel, back_populates="comments")
+    author: Mapped["UserModel"] = relationship("UserModel", back_populates="comments")
 
     def __repr__(self):
         return f"<Comment {self.id}>"
@@ -102,17 +102,17 @@ class ArticleModel(Base):
     author_id: Mapped[int] = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"))
 
     # Relations
-    author: Mapped[UserModel] = relationship(UserModel, back_populates="articles")
-    comments: Mapped[List[CommentModel]] = relationship(
-        CommentModel, back_populates="article", cascade="all, delete-orphan"
+    author: Mapped["UserModel"] = relationship("UserModel", back_populates="articles")
+    comments: Mapped[List["CommentModel"]] = relationship(
+        "CommentModel", back_populates="article", cascade="all, delete-orphan"
     )
     tags: Mapped[List[ArticleTag]] = relationship(
         ArticleTag,
         secondary=article_tags,
         back_populates="articles",
     )
-    favorited_by: Mapped[List[UserModel]] = relationship(
-        UserModel,
+    favorited_by: Mapped[List["UserModel"]] = relationship(
+        "UserModel",
         secondary="article_favorites",
         back_populates="favorite_articles",
     )
