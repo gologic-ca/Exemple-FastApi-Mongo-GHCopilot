@@ -1,97 +1,41 @@
-# ![RealWorld FastAPI + SQLAlchemy App](logo.png)
+# ![Formation GoLogic Example de Projet](Gologic.png)
 
-<div align="center">
+## Pré-requis pour exemple de projet 
 
-<!---
-[![CircleCI](https://circleci.com/gh/......)](https://circleci.com/gh/...)
-[![codecov](https://codecov.io/gh/.../........)](https://codecov.io/gh/.....)
-[![Maintainability](https://api.codeclimate.com/v1/badges/......)](https://codeclimate.com/repos/....)
--->
+Nous sommes ravis d'explorer GitHub Copilot avec vous à travers des exemples pratiques. Pour assurer le bon déroulement, veuillez préparer votre poste de travail de la manière suivante :
 
-![Python: 3.10](https://img.shields.io/badge/python-3.10-informational.svg)
-[![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
-[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/python/black)
-[![mypy: checked](https://img.shields.io/badge/mypy-checked-informational.svg)](http://mypy-lang.org/)
-[![Manager: poetry](https://img.shields.io/badge/manager-poetry-blueviolet.svg)](https://poetry.eustace.io/)
+- Installer un environnement de développement (choisissez l'une des options suivantes) :
+  - **Visual Studio Code** : [https://code.visualstudio.com/download](https://code.visualstudio.com/download)
 
-</div>
+- [Installer Docker](https://docs.docker.com/engine/install/) (Pour l'instance local de MongoDB)
 
-> ### [FastAPI](https://github.com/tiangolo/fastapi) + [SQLAlchemy](https://www.sqlalchemy.org/) codebase containing real world examples (CRUD, auth, advanced patterns, etc) that adheres to the [RealWorld](https://github.com/gothinkster/realworld) spec and API.
+- Installer Python ( >= Version 3.11) [https://www.python.org/downloads/](https://www.python.org/downloads/)
+    - Assurez-vous que les variables d'environements dans votre système sont bien configurés
+    - Tapez "View Advanced System Settings" dans la barre de recherche
+    - Dans "Advanced", cliquez "Environment Variables" en bas à droit
+    - Sélectionnez "Path", clicquez "Edit..." (ou double-cliquez "Path")
+    - ***Cliquez "New" et insérez le path vers votre version de python*** 
+    - Pour moi c'est: `C:\Users\SpencerHandfield\AppData\Local\Programs\Python\Python313` et `C:\Users\SpencerHandfield\AppData\Local\Programs\Python\Python313\Scripts`
+    - Vérifiez si ça bien fonctionner en tapant `py --version` dans le terminal
 
-[![CI](https://github.com/art049/fastapi-sqlalchemy-realworld-example/actions/workflows/ci.yml/badge.svg)](https://github.com/art049/fastapi-sqlalchemy-realworld-example/actions/workflows/ci.yml)
-[![Realworld Tests](https://github.com/art049/fastapi-sqlalchemy-realworld-example/actions/workflows/realworld-tests.yml/badge.svg)](https://github.com/art049/fastapi-sqlalchemy-realworld-example/actions/workflows/realworld-tests.yml)
+- Installer uv [https://docs.astral.sh/uv/getting-started/installation/#standalone-installer](https://docs.astral.sh/uv/getting-started/installation/#standalone-installer)
+    - **Dans Terminal** Ouvrez un nouveau terminal et roulez la commande `powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"`
 
-# Getting started
+ - Installer le plugin SonarLint
+    -   **Visual Studio Code** : Ouvrir VSCode, Ctrl+Shift+X, saisir "SonarQube for IDE" dans la barre de recherche, cliquer sur "Install".
 
-You can view a live demo at [https://demo.realworld.io/](https://demo.realworld.io/)
+## Démarrer l'application
 
-## Prerequisites
+### Avec Visual Studio Code :
+- Ouvrir VSCode et ouvrir une nouvelle fenêtre (Ctrl+Shift+N).
+- Dans l'accueil, cliquer sur "Clone Git Repository...", entrer l'URL de ce dépôt (à savoir : [https://github.com/gologic-ca/Exemple-FastApi-Mongo-GHCopilot.git](https://github.com/gologic-ca/Exemple-FastApi-Mongo-GHCopilot.git)) et confirmer en cliquant sur "Clone from the URL". Cliquer sur "Open".
+- Une fois le projet ouvert, ouvrir un nouveau terminal BASH (Shift+Ctrl+\`). Soit avec click droite "New Terminal With Profile..." et "Git Bash" ou la petite flèche à côté du "+" dans la fenêtre du terminal pour "New Terminal" et sélectionnez "Git Bash"
+Exécuter les commandes :
+  - `uv sync`
+  - `alembic init alembic`
+  - Dans le fichier `alembic.ini`, modifiez la ligne 66 pour dire: `sqlalchemy.url = sqlite:///./sql_app.db`
+  - `alembic upgrade head`
+  - `uvicorn --app-dir ./src/ api:app`
+- Validez que l'application fonctionne en allant à `localhost:8080/docs` ou `http://127.0.0.1:8000/docs`
 
-- Python 3.9+
-- pip
-
-## Installation
-
-1. Clone the repository:
-
-```bash
-git clone https://github.com/yourusername/fastapi-sqlalchemy-realworld-example.git
-cd fastapi-sqlalchemy-realworld-example
-```
-
-2. Create a virtual environment and activate it:
-
-```bash
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-```
-
-3. Install dependencies:
-
-```bash
-pip install -e .
-```
-
-4. Initialize the database:
-
-```bash
-alembic upgrade head
-```
-
-5. Run the application:
-
-```bash
-uvicorn src.api:app --reload
-```
-
-The API will be available at [http://localhost:8000](http://localhost:8000)
-
-## Features
-
-- User authentication (JWT)
-- User registration and login
-- Profile management
-- Article CRUD operations
-- Comments on articles
-- Favorite articles
-- Follow/unfollow users
-- Tags management
-
-## API Documentation
-
-Once the application is running, you can access:
-
-- Swagger UI documentation at [http://localhost:8000/docs](http://localhost:8000/docs)
-- ReDoc documentation at [http://localhost:8000/redoc](http://localhost:8000/redoc)
-
-## Testing
-
-Run the tests with:
-
-```bash
-pytest
-```
-
-## License
-
-MIT
+Félicitations l'application devrait bien être parti !
