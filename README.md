@@ -29,13 +29,9 @@ Nous sommes ravis d'explorer GitHub Copilot avec vous à travers des exemples pr
 ### Avec Visual Studio Code :
 - Ouvrir VSCode et ouvrir une nouvelle fenêtre (Ctrl+Shift+N).
 - Dans l'accueil, cliquer sur "Clone Git Repository...", entrer l'URL de ce dépôt (à savoir : [https://github.com/gologic-ca/Exemple-FastApi-Mongo-GHCopilot.git](https://github.com/gologic-ca/Exemple-FastApi-Mongo-GHCopilot.git)) et confirmer en cliquant sur "Clone from the URL". Cliquer sur "Open".
-- Une fois le projet ouvert, ouvrir un nouveau terminal BASH (Shift+Ctrl+\`). Soit avec click droite "New Terminal With Profile..." et "Git Bash" ou la petite flèche à côté du "+" dans la fenêtre du terminal pour "New Terminal" et sélectionnez "Git Bash"
-Exécuter les commandes :
-  - `uv sync`
-  - `alembic init alembic`
-  - Dans le fichier `alembic.ini`, modifiez la ligne 66 pour dire: `sqlalchemy.url = sqlite:///./sql_app.db`
-  - `alembic upgrade head`
-  - `uvicorn --app-dir ./src/ api:app`
-- Validez que l'application fonctionne en allant à `localhost:8080/docs` ou `http://127.0.0.1:8000/docs`
+- Une fois le projet ouvert, ouvrir un nouveau terminal (Shift+Ctrl+\`).
+Exécuter la commandes :
+  - `uv run uvicorn --app-dir ./src/ api:app --reload`
+- Validez que l'application fonctionne en allant à `http://127.0.0.1:8000/docs` ou `localhost:8080/docs`
 
 Félicitations l'application devrait bien être parti !
