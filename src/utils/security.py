@@ -1,20 +1,21 @@
 from datetime import datetime, timedelta
 from typing import Optional, cast
 
-from fastapi import Depends, FastAPI, HTTPException
+from fastapi import Depends, HTTPException
 from fastapi.openapi.models import OAuthFlows as OAuthFlowsModel
 from fastapi.security import OAuth2
 from fastapi.security.utils import get_authorization_scheme_param
 from jose import JWTError, jwt
-from odmantic import AIOEngine
 from passlib.context import CryptContext
 from pydantic import BaseModel, ValidationError
+from sqlalchemy.ext.asyncio import AsyncSession
 from starlette.requests import Request
 
 from core.exceptions import CredentialsException, NotAuthenticatedException
-from models.user import UserModel
-from schemas.user import User
-from settings import SETTINGS, Engine
+from dependencies import get_db
+from models.user_sql import User
+from schemas.user import User as UserSchema
+from settings import settings
 
 
 class Token(BaseModel):
@@ -26,7 +27,7 @@ class TokenContent(BaseModel):
     username: str
 
 
-PWD_CONTEXT = CryptContext(schemes=["bcrypt"], deprecated="auto")
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
 class OAuth2PasswordToken(OAuth2):
@@ -51,36 +52,37 @@ class OAuth2PasswordToken(OAuth2):
 
 OAUTH2_SCHEME = OAuth2PasswordToken(tokenUrl="/users")
 
-app = FastAPI()
+
+def verify_password(plain_password: str, hashed_password: str) -> bool:
+    """Vérifie si le mot de passe en clair correspond au hash."""
+    return pwd_context.verify(plain_password, hashed_password)
 
 
-def verify_password(plain_password, hashed_password):
-    return PWD_CONTEXT.verify(plain_password, hashed_password)
-
-
-def get_password_hash(password):
-    return PWD_CONTEXT.hash(password)
+def get_password_hash(password: str) -> str:
+    """Génère un hash pour le mot de passe."""
+    return pwd_context.hash(password)
 
 
 async def get_user_instance(
-    engine: AIOEngine, username: Optional[str] = None, email: Optional[str] = None
-) -> Optional[UserModel]:
-    """Get a user instance from its username"""
+    db: AsyncSession, username: Optional[str] = None, email: Optional[str] = None
+) -> Optional[User]:
+    """Get a user instance from its username or email"""
+    from sqlalchemy import select
+
     if username is not None:
-        query = UserModel.username == username
+        query = select(User).where(User.username == username)
     elif email is not None:
-        query = UserModel.email == email
+        query = select(User).where(User.email == email)
     else:
         return None
-    user = await engine.find_one(UserModel, query)
-    return user
+
+    result = await db.execute(query)
+    return result.scalar_one_or_none()
 
 
-async def authenticate_user(
-    engine: AIOEngine, email: str, password: str
-) -> Optional[UserModel]:
+async def authenticate_user(db: AsyncSession, email: str, password: str) -> Optional[User]:
     """Verify the User/Password pair against the DB content"""
-    user = await get_user_instance(engine, email=email)
+    user = await get_user_instance(db, email=email)
     if user is None:
         return None
     if not verify_password(password, user.hashed_password):
@@ -88,27 +90,30 @@ async def authenticate_user(
     return user
 
 
-def create_access_token(user: UserModel) -> str:
-    token_content = TokenContent(username=user.username)
-    expire = datetime.utcnow() + timedelta(minutes=SETTINGS.ACCESS_TOKEN_EXPIRE_MINUTES)
-    to_encode = {"exp": expire, "sub": token_content.json()}
-    encoded_jwt = jwt.encode(
-        to_encode, SETTINGS.SECRET_KEY.get_secret_value(), algorithm=SETTINGS.ALGORITHM
-    )
-    return str(encoded_jwt)
+def create_access_token(data: dict, expires_delta: Optional[timedelta] = None) -> str:
+    """Crée un token JWT."""
+    to_encode = data.copy()
+    if expires_delta:
+        expire = datetime.utcnow() + expires_delta
+    else:
+        expire = datetime.utcnow() + timedelta(minutes=15)
+    to_encode.update({"exp": expire})
+    encoded_jwt = jwt.encode(to_encode, settings.SECRET_KEY, algorithm=settings.ALGORITHM)
+    return encoded_jwt
 
 
 async def get_current_user_instance(
     token: Optional[str] = Depends(OAUTH2_SCHEME),
-) -> UserModel:
+    db: AsyncSession = Depends(get_db),
+) -> User:
     """Decode the JWT and return the associated User"""
     if token is None:
         raise NotAuthenticatedException()
     try:
         payload = jwt.decode(
             token,
-            SETTINGS.SECRET_KEY.get_secret_value(),
-            algorithms=[SETTINGS.ALGORITHM],
+            settings.SECRET_KEY,
+            algorithms=[settings.ALGORITHM],
         )
     except JWTError:
         raise CredentialsException()
@@ -118,7 +123,7 @@ async def get_current_user_instance(
     except ValidationError:
         raise CredentialsException()
 
-    user = await get_user_instance(Engine, username=token_content.username)
+    user = await get_user_instance(db, username=token_content.username)
     if user is None:
         raise CredentialsException()
     return user
@@ -126,16 +131,17 @@ async def get_current_user_instance(
 
 async def get_current_user_optional_instance(
     token: str = Depends(OAUTH2_SCHEME),
-) -> Optional[UserModel]:
+    db: AsyncSession = Depends(get_db),
+) -> Optional[User]:
     try:
-        user = await get_current_user_instance(token)
+        user = await get_current_user_instance(token, db)
         return user
     except HTTPException:
         return None
 
 
 async def get_current_user(
-    user_instance: UserModel = Depends(get_current_user_instance),
+    user_instance: User = Depends(get_current_user_instance),
     token: str = Depends(OAUTH2_SCHEME),
-) -> User:
-    return User(token=token, **user_instance.dict())
+) -> UserSchema:
+    return UserSchema(token=token, **user_instance.__dict__)

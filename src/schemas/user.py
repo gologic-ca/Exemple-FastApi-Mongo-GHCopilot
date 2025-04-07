@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import List, Optional
 
 from pydantic import SecretStr
 
@@ -45,3 +45,7 @@ class Profile(BaseSchema):
 
 class ProfileResponse(BaseSchema):
     profile: Profile
+
+
+class ProfilesResponse(BaseSchema):
+    profiles: List[Profile]
