@@ -10,6 +10,7 @@ from endpoints.comment_sql import router as comment_router
 from endpoints.profile_sql import router as profile_router
 from endpoints.tag_sql import router as tag_router
 from endpoints.user_sql import router as user_router
+from endpoints import dateparser
 
 app = FastAPI()
 
@@ -40,6 +41,7 @@ app.include_router(article_router, tags=["article"])
 app.include_router(comment_router, tags=["article"])
 app.include_router(tag_router, tags=["tag"])
 app.include_router(profile_router, tags=["profile"])
+app.include_router(dateparser.router, prefix="/api", tags=["DateParser"])
 
 if __name__ == "__main__":
     uvicorn.run(app)
