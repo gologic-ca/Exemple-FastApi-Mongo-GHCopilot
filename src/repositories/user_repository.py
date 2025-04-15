@@ -25,14 +25,6 @@ async def get_user_by_email(session: AsyncSession, email: str) -> Optional[UserM
     result = await session.execute(query)
     return result.scalar_one_or_none()
 
-
-async def get_all_users(session: AsyncSession) -> List[UserModel]:
-    """Récupère tous les utilisateurs."""
-    query = select(UserModel)
-    result = await session.execute(query)
-    return list(result.scalars().all())
-
-
 async def create_user(session: AsyncSession, user: UserModel) -> UserModel:
     """Crée un nouvel utilisateur."""
     session.add(user)

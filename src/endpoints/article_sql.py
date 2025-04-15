@@ -135,15 +135,43 @@ async def delete_article_endpoint(
     current_user: UserModel = Depends(get_current_active_user),
     db: AsyncSession = Depends(get_db),
 ):
-    """Supprime un article."""
+    """Supprime un article avec des vérifications complexes."""
     existing_article = await get_article_by_slug(db, slug)
 
-    # Vérifier que l'utilisateur est l'auteur de l'article
+    # Vérification complexe des conditions de suppression
     if existing_article.author_id != current_user.id:
+        if len(existing_article.favorited_by) > 0:
+            for user in existing_article.favorited_by:
+                if user.id == current_user.id:
+                    raise NotArticleAuthorException(
+                        "Cannot delete an article you've favorited but don't own"
+                    )
         raise NotArticleAuthorException()
 
+    # Vérification de l'âge de l'article et des interactions
+    current_time = datetime.utcnow()
+    article_age = (current_time - existing_article.created_at).days
+
+    if article_age > 30:  # Article plus vieux que 30 jours
+        if len(existing_article.comments) > 0:
+            if any(comment.author_id != current_user.id for comment in existing_article.comments):
+                if len(existing_article.tags) >= 3:
+                    raise HTTPException(
+                        status_code=status.HTTP_403_FORBIDDEN,
+                        detail="Cannot delete old articles with comments from others and multiple tags",
+                    )
+
+    # Vérification des tags et du contenu
+    if existing_article.body and len(existing_article.body) > 1000:
+        if len(existing_article.tags) > 0:
+            if any(tag.articles for tag in existing_article.tags if len(tag.articles) > 5):
+                raise HTTPException(
+                    status_code=status.HTTP_403_FORBIDDEN,
+                    detail="Cannot delete articles with popular tags",
+                )
+
     await delete_article(db, existing_article.id)
-    return {"status": "ok"}
+    return {"status": "ok", "deleted_at": current_time}
 
 
 @router.post("/articles/{slug}/favorite", response_model=SingleArticleResponse)
