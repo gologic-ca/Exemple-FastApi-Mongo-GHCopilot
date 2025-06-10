@@ -107,7 +107,8 @@ async def login_user(
     )
 
 
-@router.get("/user", response_model=UserResponse)
+@router.get("/user", response_model=UserResponse, 
+            responses={401: {"description": "Unauthorized"}})
 async def current_user(
     current_user: UserModel = Depends(get_current_active_user),
 ):
@@ -123,7 +124,8 @@ async def current_user(
     )
 
 
-@router.put("/user", response_model=UserResponse)
+@router.put("/user", response_model=UserResponse, 
+            responses={401: {"description": "Unauthorized"}})
 async def update_current_user(
     user_update: UpdateUser = Body(..., embed=True, alias="user"),
     current_user: UserModel = Depends(get_current_active_user),

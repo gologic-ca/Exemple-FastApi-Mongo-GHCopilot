@@ -2,6 +2,7 @@ from typing import Tuple
 
 import uvicorn
 from fastapi import APIRouter, FastAPI
+from fastapi.openapi.utils import get_openapi
 from starlette.middleware.cors import CORSMiddleware
 
 from database import Base, engine
@@ -12,7 +13,33 @@ from endpoints.tag_sql import router as tag_router
 from endpoints.user_sql import router as user_router
 # from endpoints import dateparser
 
+
 app = FastAPI()
+
+
+def custom_openapi():
+    if app.openapi_schema:
+        return app.openapi_schema
+    
+    openapi_schema = get_openapi(
+        title="RealWorld API",
+        version="1.0.0",
+        description="RealWorld API",
+        routes=app.routes,
+    )      # Add security schemes
+    openapi_schema["components"]["securitySchemes"] = {
+        "HTTPBearer": {
+            "type": "http",
+            "scheme": "bearer",
+            "bearerFormat": "JWT",
+            "description": "JWT Bearer token authentication. Get your token from /users/login endpoint and use the format: Bearer <token>"
+        }
+    }
+    
+    app.openapi_schema = openapi_schema
+    return app.openapi_schema
+
+app.openapi = custom_openapi
 
 
 app.add_middleware(

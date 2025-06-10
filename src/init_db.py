@@ -6,7 +6,7 @@ from sqlalchemy.ext.asyncio import create_async_engine
 from database import Base
 
 
-async def init_db():
+async def innit_db():
     """Initialise la base de données SQLite."""
     # Vérifier si la base de données existe déjà
     db_path = "realworld.db"

@@ -3,7 +3,7 @@ from typing import Optional
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from dependencies import get_current_active_user, get_db
+from dependencies import get_current_active_user, get_current_user_optional, get_db
 from models.user_sql import UserModel
 from repositories.article_repository import follow_user, unfollow_user
 from repositories.user_repository import get_user_by_username
@@ -15,7 +15,7 @@ router = APIRouter()
 @router.get("/profiles/{username}", response_model=ProfileResponse)
 async def get_profile(
     username: str,
-    current_user: Optional[UserModel] = Depends(get_current_active_user),
+    current_user: Optional[UserModel] = Depends(get_current_user_optional),
     db: AsyncSession = Depends(get_db),
 ):
     """Récupère le profil d'un utilisateur."""

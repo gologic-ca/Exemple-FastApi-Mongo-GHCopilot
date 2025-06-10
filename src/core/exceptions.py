@@ -55,7 +55,7 @@ class NotAuthenticatedException(HTTPException):
         super().__init__(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Not authenticated",
-            headers={"WWW-Authenticate": "Token"},
+            headers={"WWW-Authenticate": "Bearer"},
         )
 
 
@@ -64,7 +64,7 @@ class CredentialsException(HTTPException):
         super().__init__(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Could not validate credentials",
-            headers={"WWW-Authenticate": "Token"},
+            headers={"WWW-Authenticate": "Bearer"},
         )
 
 
@@ -73,5 +73,5 @@ class InvalidCredentialsException(HTTPException):
         super().__init__(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Incorrect username or password",
-            headers={"WWW-Authenticate": "Token"},
+            headers={"WWW-Authenticate": "Bearer"},
         )
