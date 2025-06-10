@@ -48,4 +48,9 @@ Félicitations l'application devrait bien être parti !
 
 Tester avec le endpoint get current user pour varifier que l'authentification fonctionne correctement.
 
+### Exécuter les tests
 
+1) exécuter la commande suivante: 
+   - `uv sync --all-groups`
+2) S'assurer de créer les tests dans le dossier `tests/`
+3) Si vous utiliser Visual Studio Code les tests seront disponibles dans l'onglet "Testing"
