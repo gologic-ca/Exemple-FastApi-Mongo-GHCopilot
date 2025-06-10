@@ -35,3 +35,17 @@ Exécuter la commandes :
 - Validez que l'application fonctionne en allant à `http://127.0.0.1:8000/docs` ou `localhost:8080/docs`
 
 Félicitations l'application devrait bien être parti !
+
+### Authorisation de l'API:
+
+1) sur l'interface de Swagger, s'authentifier avec le endpoint `/users/login` avec les credentials suivants:
+- **username**: `test@example.com`
+- **password**: `testpassword`
+
+2) Copier le token JWT qui est retourné par l'API
+3) Cliquer sur le bouton en haut à droite de l'interface Swagger `Authorize`
+4) Coller le token JWT dans le champ `Value` et cliquer sur `Authorize`
+
+Tester avec le endpoint get current user pour varifier que l'authentification fonctionne correctement.
+
+
