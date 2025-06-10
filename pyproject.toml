@@ -15,9 +15,7 @@ dependencies = [
     "python-multipart>=0.0.5",
     "pydantic>=2.0.0",
     "pydantic-settings>=2.0.0",
-    "pytest>=7.0.0",
-    "pytest-asyncio>=0.21.0",
-    "pytest-xdist>=3.5.0",
+    "httpx>=0.24.0",
 ]
 
 [build-system]
@@ -38,4 +36,11 @@ select = [
     "F",  # pyflakes
     "I",  # isort
     "B",  # flake8-bugbear
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.4.0",
+    "pytest-asyncio>=1.0.0",
+    "pytest-xdist>=3.7.0",
 ]
